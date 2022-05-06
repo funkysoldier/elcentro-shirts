@@ -83,7 +83,7 @@
                 <article class="page-content" itemscope itemtype="http://schema.org/WebPage">
        
 <div id="page" role="main" itemprop="description">
-	<p>После многих предыдущих Джемов и РеДжемов у нас осталось некоторое колличество сувенирных футболок, которые вы сможете приобрести со скидками. 
+	<p>После предыдущих Джемов и РеДжемов у нас осталось некоторое колличество сувенирных футболок, которые вы сможете приобрести со скидками. 
 В форме ниже можно выбрать дизайн и посмотреть оставшиеся размеры.</p>
 <style>
 .float-logo {
@@ -100,9 +100,10 @@
 }
 </style>
 <script type="text/javascript">
+var jam;
 $( document ).ready(function() {
-	$('#logo').html('<img src="loading1.gif" />');
-	$('#cart').html('<img src="loading1.gif" />');
+	$('#logo').html('<img src="img/loading1.gif" />');
+	$('#cart').html('<img src="img/loading1.gif" />');
 	$.post("data.php", {load: 1}, function (d){
 		$('#logo').html(d);
 	});
@@ -119,17 +120,18 @@ $( document ).ready(function() {
 });
 
 function loadMe(a){
-	$('#result').html('<img src="loading1.gif" />');
+	$('#result').html('<img src="img/loading1.gif" />');
 	$.post("data.php", {jam: a}, function (d){
         $('.float-logo').removeClass('selected');
         $('#float_'+ a).addClass('selected');
 		$('#form').html(d);
+        jam = a;
 		$('#result').html('');
 	});
 }
 
 function confirmMe(a){
-	$('#result').html('<img src="loading1.gif" />');
+	$('#result').html('<img src="img/loading1.gif" />');
 	$.post("data.php", {confirm: 1}, function (d){
 		$('#confirm').html(d);
 		$('#result').html(''); 
@@ -137,7 +139,7 @@ function confirmMe(a){
 }
 
 function addToCart(a){
-	$('#result').html('<img src="loading1.gif" />');
+	$('#result').html('<img src="img/loading1.gif" />');
 	$.post("data.php", {add: a}, function (c){
 		$('#result').html(c);
 		// обновить данные по джему
@@ -151,7 +153,7 @@ function addToCart(a){
 }
 
 function delFromCart(a){
-	$('#result').html('<img src="loading1.gif" />');
+	$('#result').html('<img src="img/loading1.gif" />');
 	$.post("data.php", {del: a}, function (c){
 		$('#result').html(c);
 		// обновить данные по джему
@@ -165,15 +167,19 @@ function delFromCart(a){
 }
 
 function clearCart(){
-	$('#result').html('<img src="loading1.gif" />');
-	$.post("data.php", {clear: 1, cart: 1}, function (d){
-		$('#cart').html(d);
-		$('#result').html('');
+	$('#result').html('<img src="img/loading1.gif" />');
+	$.post("data.php", {clear: 1}, function (d){
+		$('#result').html(d);
+        loadMe(jam);
+        $.post("data.php", {cart: 1}, function (d){
+			$('#cart').html(d);
+			$('#result').html('');
+		});
 	});
 }
 
 function done(){
-	$('#result').html('<img src="loading1.gif" />');
+	$('#result').html('<img src="img/loading1.gif" />');
 	$.post("data.php", {done: $('#name').val()}, function (d){
 		$('#form').html(d);
 		clearCart();
@@ -181,6 +187,7 @@ function done(){
 }
 </script>
 	<div id="logo"></div>
+    <input id="jam" type="hidden" value="" />
 	<div class="clear-both"></div>
 	<div id="form"></div><br />
 	<div id="result"></div>
@@ -198,7 +205,7 @@ function done(){
     <footer class="globalfooter" role="contentinfo">
         <div class="container">
             <div class="footer-block" id="copyright">
-                <?php getFooter() ?>
+                <?php getFooter(); ?>
             </div>
         </div>       
     </footer>
