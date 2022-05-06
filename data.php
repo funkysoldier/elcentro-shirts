@@ -32,6 +32,9 @@ function getNumOrder() {
 }
 
 function saveCarts($cart, $add, $del) {
+    if ( !is_dir('orders') )
+        mkdir('orders', 0755, true);
+        
     // перебираем корзинки формат номер_заказа.время_хранения.cart
     $files = scandir('orders');
     $ok = 0;
